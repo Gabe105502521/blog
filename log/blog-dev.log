@@ -1,0 +1,32 @@
+2020-02-21 20:40:11.838  INFO 15664 --- [main] com.gabe.blog.BlogApplication            : Starting BlogApplication on DESKTOP-MTLBRPC with PID 15664 (E:\spring-boot\blog\target\classes started by gabe in E:\spring-boot\blog)
+2020-02-21 20:40:11.842 DEBUG 15664 --- [main] com.gabe.blog.BlogApplication            : Running with Spring Boot v2.2.4.RELEASE, Spring v5.2.3.RELEASE
+2020-02-21 20:40:11.842  INFO 15664 --- [main] com.gabe.blog.BlogApplication            : The following profiles are active: dev
+2020-02-21 20:40:12.375  INFO 15664 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2020-02-21 20:40:12.406  INFO 15664 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 16ms. Found 0 JPA repository interfaces.
+2020-02-21 20:40:12.583  INFO 15664 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-02-21 20:40:12.846  INFO 15664 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2020-02-21 20:40:12.853  INFO 15664 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2020-02-21 20:40:12.854  INFO 15664 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.30]
+2020-02-21 20:40:12.855  INFO 15664 --- [main] o.a.catalina.core.AprLifecycleListener   : Loaded APR based Apache Tomcat Native library [1.2.23] using APR version [1.7.0].
+2020-02-21 20:40:12.855  INFO 15664 --- [main] o.a.catalina.core.AprLifecycleListener   : APR capabilities: IPv6 [true], sendfile [true], accept filters [false], random [true].
+2020-02-21 20:40:12.855  INFO 15664 --- [main] o.a.catalina.core.AprLifecycleListener   : APR/OpenSSL configuration: useAprConnector [false], useOpenSSL [true]
+2020-02-21 20:40:12.858  INFO 15664 --- [main] o.a.catalina.core.AprLifecycleListener   : OpenSSL successfully initialized [OpenSSL 1.1.1c  28 May 2019]
+2020-02-21 20:40:12.951  INFO 15664 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2020-02-21 20:40:12.952  INFO 15664 --- [main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 1066 ms
+2020-02-21 20:40:13.059  INFO 15664 --- [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2020-02-21 20:40:13.101  INFO 15664 --- [main] org.hibernate.Version                    : HHH000412: Hibernate Core {5.4.10.Final}
+2020-02-21 20:40:13.173  INFO 15664 --- [main] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
+2020-02-21 20:40:13.230  INFO 15664 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2020-02-21 20:40:13.477  INFO 15664 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2020-02-21 20:40:13.486  INFO 15664 --- [main] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.MySQL5Dialect
+2020-02-21 20:40:13.626  INFO 15664 --- [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2020-02-21 20:40:13.630  INFO 15664 --- [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2020-02-21 20:40:13.739  WARN 15664 --- [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2020-02-21 20:40:13.865  INFO 15664 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-02-21 20:40:13.916  INFO 15664 --- [main] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page template: index
+2020-02-21 20:40:14.230  INFO 15664 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2020-02-21 20:40:14.233  INFO 15664 --- [main] com.gabe.blog.BlogApplication            : Started BlogApplication in 2.736 seconds (JVM running for 3.398)
+2020-02-21 20:40:15.700  INFO 15664 --- [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-02-21 20:40:15.701  INFO 15664 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2020-02-21 20:40:15.710  INFO 15664 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 9 ms
+2020-02-21 20:40:15.768  INFO 15664 --- [http-nio-8080-exec-1] com.gabe.blog.aspect.LogAspect           : Request : RequestLog{url='http://127.0.0.1:8080/', ip='127.0.0.1', classmethod='com.gabe.blog.web.indexController.index', args=[]}

@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head th:replace="admin/_fragments :: head('文章')">
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>登入</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="../../static/theme/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom fonts for this template -->
+    <link href="../../static/theme/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+    <!-- Custom styles for this template -->
+    <link href="css/clean-blog.min.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+<!-- Navigation -->
+<nav th:replace="_fragments :: nav(1)">
+
+</nav>
+
+<!-- Page Header -->
+<header class="masthead" style="background-image: url('../../static/theme/img/contact-bg.jpg')" th:url="@{/theme/img/contact-bgjpg}">
+    <div class="overlay"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-md-10 mx-auto">
+                <div class="page-heading">
+                    <h1>Log in</h1>
+                    <span class="subheading">Have something wanna say? Log in and post!</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</header>
+
+<!-- Main Content -->
+<div class="container">
+    <div class="col-lg-8 col-md-10 mx-auto">
+        <form method="post" th:object="${blog}" th:action="@{/admin/blogs}" id="blog-form">
+            <input type="hidden" name="published" th:value="*{published}">
+            <input type="hidden" name="id" th:value="*{id}">
+            <div class="control-group">
+                <div class="form-group floating-label-form-group controls">
+                    <label>Title</label>
+                    <input type="text" name="title" class="form-control" th:value="*{title}"placeholder="Title" required data-validation-required-message="Please enter its title.">
+                    <p class="help-block text-danger"></p>
+                    </div>
+            </div>
+            <div class="control-group">
+                <div class="form-group floating-label-form-group controls">
+                    <label>Picture</label>
+                    <input type="text" name="firstPicture" class="form-control" th:value="*{firstPicture}" placeholder="Picture URL" required data-validation-required-message="Please enter your picture's URL(If your want).">
+                    <p class="help-block text-danger"></p>
+                </div>
+            </div>
+            <div class="control-group">
+                <div class="form-group floating-label-form-group controls">
+                    <label>Context</label>
+                    <textarea class="form-control" name="content" placeholder="Content" th:text="*{content}" required data-validation-required-message="Please enter some content."></textarea>
+                    <p class="help-block text-danger"></p>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col-4">
+                    <input type="hidden" name="forTypeId" th:value="*{type}!=null ? *{type.id}">
+                    <select class="form-control selectpicker" name="typeId" title="Type" required>
+                        <div th:each="type : ${types}">
+                            <option th:text = ${type.name}  th:value="${type.id}" ></option>
+                        </div>
+                    </select>
+                </div>
+                <div class="col-4">
+                    <input type="hidden" name="forTagIds" th:value="*{tagIds}">
+                    <select class="form-control selectpicker" multiple   name="tagIds" title="Tags" required>
+                        <div th:each="tag : ${tags}">
+                            <option th:text = ${tag.name}  th:value="${tag.id}"></option>
+                        </div>
+                    </select>
+                </div>
+            </div>
+
+            <br>
+            <div id="success"></div>
+            <div class="form-row">
+                <div class="form-group col-md-2" >
+                    <button  type="button" class="btn btn-primary text-white" id="BackButton" onclick="window.history.go(-1)">Back</button>
+                </div>
+                &nbsp;
+                <div class="form-group col-md-2">
+                    <button type="submit"  id="save-btn" class="btn btn-primary" >Save</button>
+                </div>
+                &nbsp;
+                <div class="form-group col-md-2">
+                    <button type="submit" id="publish-btn" class="btn btn-primary" >Publish</button>
+                </div>
+            </div>
+        </form>
+
+</div>
+</div>
+
+<hr>
+
+<!-- Footer -->
+<footer th:replace="_fragments :: footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-md-10 mx-auto">
+                <ul class="list-inline text-center">
+                    <li class="list-inline-item">
+                        <a href="#">
+                <span class="fa-stack fa-lg">
+                  <i class="fas fa-circle fa-stack-2x"></i>
+                  <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
+                </span>
+                        </a>
+                    </li>
+                    <li class="list-inline-item">
+                        <a href="#">
+                <span class="fa-stack fa-lg">
+                  <i class="fas fa-circle fa-stack-2x"></i>
+                  <i class="fab fa-facebook-f fa-stack-1x fa-inverse"></i>
+                </span>
+                        </a>
+                    </li>
+                    <li class="list-inline-item">
+                        <a href="#">
+                <span class="fa-stack fa-lg">
+                  <i class="fas fa-circle fa-stack-2x"></i>
+                  <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                </span>
+                        </a>
+                    </li>
+                </ul>
+                <p class="copyright text-muted">Copyright &copy; Your Website 2019</p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- Bootstrap core JavaScript -->
+<!--/*/<th:block th:replace="admin/_fragments :: script">/*/-->
+<script src="../../static/theme/vendor/jquery/jquery.min.js"></script>
+<script src="../../static/theme/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+<!-- Custom scripts for this template -->
+<script src="../../static/theme/js/clean-blog.min.js"></script>
+<!--/*/</th:block>/*/-->
+
+<script>
+
+    $(window).on('load', function() {
+        $("[name='typeId']").selectpicker('val', $("[name='forTypeId']").val());
+        var array = JSON.parse("[" + $("[name='forTagIds']").val() + "]");
+        $("[name='tagIds']").selectpicker('val', array);
+
+    });
+
+    $('#save-btn').on('click',function () {
+       $('[name="published"]').val(false);
+    });
+
+    $('#publish-btn').on('click',function () {
+        $('[name="published"]').val(true);
+    });
+    /*
+    $(function() {
+        $("[name='typeId']").selectpicker({
+            noneSelectedText: 'Type' //默认显示内容  
+        });
+        $("[name='tagids']").selectpicker({
+            noneSelectedText: 'Tags' //默认显示内容  
+        });
+
+    });*/
+</script>
+
+
+</body>
+
+</html>
