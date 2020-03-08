@@ -6,6 +6,7 @@ import com.gabe.blog.po.Blog;
 import java.util.List;
 
 import com.gabe.blog.po.Type;
+import com.gabe.blog.util.MarkdownUtils;
 import com.gabe.blog.util.MyBeanUtils;
 import com.gabe.blog.vo.BlogQuery;
 import com.gabe.blog.vo.BlogQuery2;
@@ -15,6 +16,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,6 +39,21 @@ public class BlogServiceImpl implements BlogService {
     @Override
     public Blog getBlog(Long id) {
         return blogRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public Blog getAndConvert(Long id) {
+        Blog blog = blogRepository.findById(id).orElse(null);
+        if (blog == null) {
+            throw new NotFoundException("This blog is unavailable");
+        }
+        Blog b = new Blog();
+        BeanUtils.copyProperties(blog,b);
+        String content = b.getContent();
+        b.setContent(MarkdownUtils.markdown2Html(content));
+
+        blogRepository.upViews(id);
+        return b;
     }
 
     @Override

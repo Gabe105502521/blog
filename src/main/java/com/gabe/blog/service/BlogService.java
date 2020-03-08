@@ -10,7 +10,7 @@ public interface BlogService {
     Blog saveBlog(Blog blog);
 
     Blog getBlog(Long id);
-
+    Blog getAndConvert(Long id);
     Page<Blog> ListBlog(Pageable pageable);
 
     Page<Blog> ListBlog(Pageable pageable, BlogQuery blog);

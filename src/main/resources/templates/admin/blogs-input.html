@@ -1,24 +1,14 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-
-</body>
-</html>
-<!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 
-<head th:replace="admin/_fragments :: head('文章')">
+<head th:replace="admin/_fragments :: head('blogInput')">
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>登入</title>
+    <title th:text="blogInput"></title>
 
     <!-- Bootstrap core CSS -->
     <link href="../../static/theme/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -77,9 +67,9 @@
                 </div>
             </div>
             <div class="control-group">
-                <div class="form-group floating-label-form-group controls">
+                <div class="form-group floating-label-form-group controls" id="md-editor" style="z-index: 1 !important;">
                     <label>Context</label>
-                    <textarea class="form-control" name="content" placeholder="Content" th:text="*{content}" required data-validation-required-message="Please enter some content."></textarea>
+                    <textarea class="form-control"  name="content" placeholder="Content" th:text="*{content}" required data-validation-required-message="Please enter some content."></textarea>
                     <p class="help-block text-danger"></p>
                 </div>
             </div>
@@ -172,6 +162,15 @@
 
 <script>
 
+    //初始化markdown編輯器
+    $(function() {
+        var editor = editormd("md-editor", {
+            width  : "100%",
+            height : 500,
+            syncScrolling : "single",
+            path   : "/editormd/lib/"
+        });
+    });
     $(window).on('load', function() {
         $("[name='typeId']").selectpicker('val', $("[name='forTypeId']").val());
         var array = JSON.parse("[" + $("[name='forTagIds']").val() + "]");

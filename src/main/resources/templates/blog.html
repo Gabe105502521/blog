@@ -9,7 +9,7 @@
   <meta name="author" content="">
 
   <title>Blog</title>
-1
+
   <!-- Bootstrap core CSS -->
   <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
@@ -86,16 +86,20 @@
             Views: <span th:text="${blog.views}"></span>
           </blockquote>
           <hr class="bg-success">
-          <blockquote class="blockquote">The dreams of yesterday are the hopes of today and the reality of tomorrow. Science has not yet mastered prophecy. We predict too much for the next year and yet far too little for the next ten.</blockquote>
+          <!--utext會解析html-->
+          <div th:utext="${blog.content}" id="content" >
+            <!--<blockquote class="blockquote">The dreams of yesterday are the hopes of today and the reality of tomorrow. Science has not yet mastered prophecy. We predict too much for the next year and yet far too little for the next ten.</blockquote>
 
-          <h2 class="section-heading">Reaching for the Stars</h2>
+            <h2 class="section-heading">Reaching for the Stars</h2>
 
-          <p>As we got further and further away, it [the Earth] diminished in size. Finally it shrank to the size of a marble, the most beautiful you can imagine. That beautiful, warm, living object looked so fragile, so delicate, that if you touched it with a finger it would crumble and fall apart. Seeing this has to change a man.</p>
+            <p>As we got further and further away, it [the Earth] diminished in size. Finally it shrank to the size of a marble, the most beautiful you can imagine. That beautiful, warm, living object looked so fragile, so delicate, that if you touched it with a finger it would crumble and fall apart. Seeing this has to change a man.</p>
 
-          <a href="#">
-            <img class="img-fluid" src="/theme/img/post-sample-image.jpg" alt="">
-          </a>
-          <span class="caption text-muted">To go places and do things that have never been done before – that’s what living is all about.</span>
+            <a href="#">
+              <img class="img-fluid" src="/theme/img/post-sample-image.jpg" alt="">
+            </a>
+            <span class="caption text-muted">To go places and do things that have never been done before – that’s what living is all about.</span>
+            -->
+          </div>
           <hr class="bg-success">
           <h2 class="section-heading">Comment Board</h2>
           <div id="comment-container" style="background-color: #FAFAFA">
@@ -247,7 +251,13 @@
       $("[name='commentParentId']").val(commentParentId);;
     }
 
-
+    $('#content').find('img').each(function(){
+      var img = this;
+      if (img.width > 768) {
+        img.style.width = "100%";
+        img.style.height = "auto";
+      }
+    });
   </script>
 
 </body>
