@@ -64,7 +64,7 @@
 
             </form>
         </nav>
-        <div th:fragment="blogList" id="table-container">
+        <div th:fragment="blogList" id="page-container">
             <table  class="table text-nowrap" >
                 <thead class="thead-light  " >
                 <tr>
@@ -175,7 +175,7 @@
             loadData();
     });
     function loadData() {
-        $('#table-container').load("/admin/blogs/search", {
+        $('#page-container').load("/admin/blogs/search", {
             title : $("[name='title']").val(),
             typeId : $("[name='typeId']").selectpicker('val'),
             page : $("[name='page']").val()

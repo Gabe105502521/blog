@@ -8,6 +8,7 @@ import java.util.List;
 import com.gabe.blog.po.Type;
 import com.gabe.blog.util.MyBeanUtils;
 import com.gabe.blog.vo.BlogQuery;
+import com.gabe.blog.vo.BlogQuery2;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -18,10 +19,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
+import javax.persistence.criteria.*;
 import java.util.ArrayList;
 
 @Service
@@ -68,6 +66,44 @@ public class BlogServiceImpl implements BlogService {
                 //他會根據我們給的條件完成自動拼接查詢的sql語句
                 cq.where(predicates.toArray(new Predicate[predicates.size()]));
                 return null;
+            }
+        }, pageable);
+    }
+
+    //可查關鍵字的
+    @Override
+    public Page<Blog> ListBlog(Pageable pageable, BlogQuery2 blog) {
+        return blogRepository.findAll(new Specification<Blog>() {
+            //root表你要查詢的對象，將之映射成Root，從這個可獲成表的一些字段、屬性值
+            //CriteriaQuery 是可以放查詢條件的容器
+            //criterBuilder 是設置具體某個條件的表達式 ex 相等、like
+            @Override
+            public Predicate toPredicate(Root<Blog> root, CriteriaQuery<?> cq, CriteriaBuilder cb) {
+                //組合條件放此list
+                List<Predicate> predicates = new ArrayList<>();
+                if (!"".equals(blog.getKey_word()) && blog.getKey_word() != null) {
+                    predicates.add(cb.or(cb.like(root.<String>get("title"), "%" + blog.getKey_word() + "%"), cb.like(root.<String>get("content"), "%" + blog.getKey_word() + "%")));
+                }
+                // id不會有""
+                if (blog.getTypeId() != null) {
+                    predicates.add(cb.equal(root.<Type>get("type").get("id"), blog.getTypeId()));
+                }
+
+                //傳的參數是條件的數組
+                //他會根據我們給的條件完成自動拼接查詢的sql語句
+                cq.where(predicates.toArray(new Predicate[predicates.size()]));
+                return null;
+            }
+        }, pageable);
+    }
+
+    @Override
+    public Page<Blog> ListBlog(Pageable pageable, Long tagId) {
+        return blogRepository.findAll(new Specification<Blog>() {
+            @Override
+            public Predicate toPredicate(Root<Blog> root, CriteriaQuery<?> cq, CriteriaBuilder cb) {
+                Join join = root.join("tags");
+                return cb.equal(join.get("id"),tagId);
             }
         }, pageable);
     }

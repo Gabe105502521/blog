@@ -2,9 +2,10 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 
-<head th:replace="_fragments :: head(~{::title})">
+<head th:replace="_fragments :: head('首頁')">
 
     <meta charset="utf-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
@@ -50,22 +51,46 @@
 <div class="container">
     <div class="row">
         <div class="col-lg-8 col-md-10 mx-auto">
-            <div class="post-preview">
-                <a href="post.html">
-                    <h2 class="post-title">
-                        Man must explore, and this is exploration at its greatest
-                    </h2>
-                    <h3 class="post-subtitle">
-                        Problems look mighty small from 150 miles up
-                    </h3>
-                </a>
-                <p class="post-meta">Posted by
-                    <a href="#">Start Bootstrap</a>
-                    on September 24, 2019</p>
-            </div>
-            <hr>
-            <div class="post-preview">
-                <a href="post.html">
+            <nav class="navbar navbar-light bg-light">
+                <form class="form-inline">
+                    <input type="hidden" name="page" >
+                    <input class="form-control" name="key_word" type="search" placeholder="Key-Word">
+                    <select class="selectpicker" title="types" name="typeId">
+                        <div th:each="type : ${types}">
+                            <option th:text = ${type.name}  th:value="${type.id}" value="1" >Java</option>
+                        </div>
+                    </select>
+                    <button id="clear-btn" class="btn btn-outline-success" type="button">Clear</button>
+                    &ensp;
+                    <button id="search-btn" class="btn btn-outline-success " type="button">Search</button>
+
+                </form>
+            </nav>
+            <div th:fragment="blogList" id="page-container">
+                <div class="post-preview" th:each="blog : ${page.content}">
+                    <a href="#" th:href="@{/blog/{id}(id=${blog.id})}">
+                        <h3 th:text="${blog.title}" class="post-title">
+                            Man must explore, and this is exploration at its greatest
+                        </h3>
+                        <h4 th:text="${blog.content}"class="post-subtitle">
+                            Problems look mighty small from 150 miles up
+                        </h4>
+                    </a>
+                    <div class="post-meta">
+                        <p style="display: inline">Post by</p>
+                        <a href="#" th:text="${blog.user.username}"  style="display: inline"></a>
+                        <p style="display: inline">On</p>
+                        <p th:text="${#dates.format(blog.updateTime, 'yyyy-MM-dd HH:mm')}"  style="display: inline"></p>
+                        &ensp;
+                        <p style="display: inline">  Views: </p>
+                        <p th:text="${blog.views}" style="display: inline"></p>
+                        &ensp;&ensp;&ensp;
+                        <a href="#" th:text="${blog.type.name}" class="text-success" style="display: inline;"></a>
+                    </div>
+                    <hr>
+                </div>
+            <!--<div class="post-preview">
+                <a href="#">
                     <h2 class="post-title">
                         I believe every human has a finite number of heartbeats. I don't intend to waste any of mine.
                     </h2>
@@ -76,7 +101,7 @@
             </div>
             <hr>
             <div class="post-preview">
-                <a href="post.html">
+                <a href="#">
                     <h2 class="post-title">
                         Science has not yet mastered prophecy
                     </h2>
@@ -90,7 +115,7 @@
             </div>
             <hr>
             <div class="post-preview">
-                <a href="post.html">
+                <a href="#">
                     <h2 class="post-title">
                         Failure is not an option
                     </h2>
@@ -102,11 +127,14 @@
                     <a href="#">Start Bootstrap</a>
                     on July 8, 2019</p>
             </div>
-            <hr>
+            <hr>  -->
             <!-- Pager -->
-            <div class="clearfix">
-                <a class="btn btn-primary float-right" href="#">Older Posts &rarr;</a>
+                <div class="clearfix">
+                    <a class="btn btn-primary float-left" th:href="@{/(page=${page.number}-1)}" th:unless="${page.first}">Elder Posts &larr;</a>
+                    <a class="btn btn-primary float-right" th:href="@{/(page=${page.number}+1)}" th:unless="${page.last}">Older Posts &rarr;</a>
+                </div>
             </div>
+
         </div>
     </div>
 </div>
@@ -158,6 +186,39 @@
 <!-- Custom scripts for this template -->
 <script src="theme/js/clean-blog.min.js"></script>
 <!--/*/</th:block>/*/-->
+
+<script>
+    $('#search-btn')
+        .on('click', function () {
+            $("[name='page']").val(0);
+            loadData();
+    });
+    function loadData() {
+        $('#page-container').load("/index/search", {
+            key_word : $("[name='key_word']").val(),
+            typeId : $("[name='typeId']").selectpicker('val'),
+            page : $("[name='page']").val()
+        });
+    }
+
+    $("#clear-btn")
+        .on("click", function () {
+            $("[name='key_word']").val("");
+            $("[name='typeId']").selectpicker('val',['noneSelectedText']);
+        });
+
+    //input按enter行為
+    $("[name='key_word']").keypress(function(e){
+        code = (e.keyCode ? e.keyCode : e.which);
+        if (code == 13)
+        {
+            $('.selectpicker').selectpicker('toggle')
+            return false;
+        }
+    });
+
+
+</script>
 
 </body>
 

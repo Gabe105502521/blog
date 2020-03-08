@@ -8,20 +8,23 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>首頁</title>
+    <title th:text="${title}"></title>
 
     <!-- Bootstrap core CSS -->
-    <link href="theme/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="theme/vendor/bootstrap/css/bootstrap.min.css" th:href="@{/theme/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
 
     <!-- Custom fonts for this template -->
-    <link href="theme/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="theme/vendor/fontawesome-free/css/all.min.css" th:href="@{/theme/vendor/fontawesome-free/css/all.min.css}" rel="stylesheet" type="text/css">
     <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet'
           type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800'
           rel='stylesheet' type='text/css'>
 
     <!-- Custom styles for this template -->
-    <link href="theme/css/clean-blog.min.css" rel="stylesheet">
+    <link href="theme/css/clean-blog.min.css" th:href="@{/theme/css/clean-blog.min.css}" rel="stylesheet">
+
+    <!-- select css -->
+    <link th:href="@{/theme/css/bootstrap-select.min.css}"  rel="stylesheet" type="text/css">
 
 </head>
 
@@ -30,7 +33,7 @@
 <!-- Navigation -->
 <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav" th:fragment="nav(n)">
     <div class="container">
-        <a class="navbar-brand" href="blogs.html">Start Bootstrap</a>
+        <a class="navbar-brand" th:href="@{/}">Blogs</a>
         <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
                 data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false"
                 aria-label="Toggle navigation">
@@ -40,16 +43,16 @@
         <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="blogs.html" th:classappend="${n==1} ? 'text-dark'">Home</a>
+                    <a class="nav-link" th:href="@{/}" th:classappend="${n==1} ? 'text-dark'">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="post.html" th:classappend="${n==2} ? 'text-dark'">Types</a>
+                    <a class="nav-link" th:href="@{/tags/-1}" href="contact.html" th:classappend="${n==2} ? 'text-dark'">Tags</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="contact.html" th:classappend="${n==3} ? 'text-dark'">Login</a>
+                    <a class="nav-link" th:href="@{/admin}" th:classappend="${n==3} ? 'text-dark'">Login</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="about.html" th:classappend="${n==4} ? 'text-dark'">About</a>
+                    <a class="nav-link" th:href="@{/about}" th:classappend="${n==4} ? 'text-dark'">About</a>
                 </li>
             </ul>
         </div>
@@ -58,7 +61,7 @@
 
 
 <!-- Page Header -->
-<header class="masthead" style="background-image: url('theme/img/home-bg.jpg')">
+<header class="masthead" style="background-image: url('theme/img/home-bg.jpg')" >
     <div class="overlay"></div>
     <div class="container">
         <div class="row">
@@ -77,7 +80,7 @@
     <div class="row">
         <div class="col-lg-8 col-md-10 mx-auto">
             <div class="post-preview">
-                <a href="post.html">
+                <a href="#">
                     <h2 class="post-title">
                         Man must explore, and this is exploration at its greatest
                     </h2>
@@ -91,7 +94,7 @@
             </div>
             <hr>
             <div class="post-preview">
-                <a href="post.html">
+                <a href="#">
                     <h2 class="post-title">
                         I believe every human has a finite number of heartbeats. I don't intend to waste any of mine.
                     </h2>
@@ -102,7 +105,7 @@
             </div>
             <hr>
             <div class="post-preview">
-                <a href="post.html">
+                <a href="#">
                     <h2 class="post-title">
                         Science has not yet mastered prophecy
                     </h2>
@@ -116,7 +119,7 @@
             </div>
             <hr>
             <div class="post-preview">
-                <a href="post.html">
+                <a href="#">
                     <h2 class="post-title">
                         Failure is not an option
                     </h2>
@@ -178,11 +181,15 @@
 
 <!-- Bootstrap core JavaScript -->
 <th:block th:fragment="script">
-    <script src="theme/vendor/jquery/jquery.min.js"></script>
-    <script src="theme/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="theme/vendor/jquery/jquery.min.js" th:src="@{/theme/vendor/jquery/jquery.min.js}"></script>
+    <script src="theme/vendor/bootstrap/js/bootstrap.bundle.min.js" th:src="@{/theme/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
 
     <!-- Custom scripts for this template -->
-    <script src="theme/js/clean-blog.min.js"></script>
+    <script src="theme/js/clean-blog.min.js" th:src="@{/theme/js/clean-blog.min.js}"></script>
+    <!--select-->
+    <script src="theme/js/bootstrap-select.min.js" th:src="@{/theme/js/bootstrap-select.min.js}"></script>
+    <script src="theme/js/defaults-zh_TW.min.js" th:src="@{/theme/js/defaults-zh_TW.min.js}"></script>
+
 </th:block>
 </body>
 

@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head th:replace="_fragments :: head('Blog')">
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>Blog</title>
+1
+  <!-- Bootstrap core CSS -->
+  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Custom fonts for this template -->
+  <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+  <!-- Custom styles for this template -->
+  <link href="css/clean-blog.min.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav" th:replace="_fragments :: nav(1)">
+    <div class="container">
+      <a class="navbar-brand" href="index.html">Start Bootstrap</a>
+      <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        Menu
+        <i class="fas fa-bars"></i>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="index.html">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="about.html">About</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Sample Post</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="contact.html">Contact</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Page Header -->
+  <header class="masthead" style="background-image: url('/theme/img/post-bg.jpg')" >
+    <div class="overlay"></div>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+          <div class="post-heading">
+            <h1>Man must explore, and this is exploration at its greatest</h1>
+            <h2 class="subheading">Problems look mighty small from 150 miles up</h2>
+            <span class="meta">Posted by
+              <a href="#">Start Bootstrap</a>
+              on August 24, 2019</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Post Content -->
+  <article>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+          <hr class="bg-success">
+          <!--用模板預設的class-->
+          <blockquote class="blockquote">
+            <img th:src="${blog.user.avatar}" alt="" class="mr-2 rounded" width="32" height="32">
+            Author：<a href="#" ><span th:text="${blog.user.username}" style="font-style: italic; color: #868e96;">Hook</span></a>
+            &ensp;
+            Update Time: <span class="post-preview" th:text="${#dates.format(blog.updateTime,'yyyy-MM-dd HH:mm')}">2020-03-06 19:30</span>
+            &ensp;
+            Views: <span th:text="${blog.views}"></span>
+          </blockquote>
+          <hr class="bg-success">
+          <blockquote class="blockquote">The dreams of yesterday are the hopes of today and the reality of tomorrow. Science has not yet mastered prophecy. We predict too much for the next year and yet far too little for the next ten.</blockquote>
+
+          <h2 class="section-heading">Reaching for the Stars</h2>
+
+          <p>As we got further and further away, it [the Earth] diminished in size. Finally it shrank to the size of a marble, the most beautiful you can imagine. That beautiful, warm, living object looked so fragile, so delicate, that if you touched it with a finger it would crumble and fall apart. Seeing this has to change a man.</p>
+
+          <a href="#">
+            <img class="img-fluid" src="/theme/img/post-sample-image.jpg" alt="">
+          </a>
+          <span class="caption text-muted">To go places and do things that have never been done before – that’s what living is all about.</span>
+          <hr class="bg-success">
+          <h2 class="section-heading">Comment Board</h2>
+          <div id="comment-container" style="background-color: #FAFAFA">
+            <div th:fragment="commentList">
+              <div class="media text-muted pt-3" th:each="comment : ${comments}">
+                <div class="media-left">
+                  <!--!=''?'@{${comment.avatar}}':'@{/own/avatar_man.png}'-->
+                  <img th:src="@{${comment.avatar}}"  alt="" class="mr-2 rounded" width="32" height="32">
+                </div>
+                <div class="media-body">
+                  <div class="pb-3 mb-0 small lh-125  border-gray">
+                    <strong class="d-block text-gray-dark" th:text="${comment.username}">@username</strong>
+                    <span th:text="${comment.content}">Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</span>
+                    <br>
+                    <a class="text-primary" style="cursor: pointer" onclick="reply(this)" th:attr="data-commentid=${comment.id},data-commentusername=${comment.username}">reply</a>
+                    &ensp;
+                    <span th:text="${#dates.format(comment.createTime,'yyyy-MM-dd HH:mm')}"></span>
+                    <div th:if="${#arrays.length(comment.replyComments)}>0">
+                      <div class="media text-muted pt-3" th:each="reply : ${comment.replyComments}">
+                        <div class="media-left">
+                          <img th:src="${reply.avatar}" alt="" class="mr-2 rounded" width="32" height="32">
+                        </div>
+                        <div class="media-body">
+                          <strong class="d-block text-gray-dark" th:text="${reply.username}">@username</strong>
+                          <span th:text="${reply.content}">Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</span>
+                          <br>
+                          <!--data-後一定得接小寫-->
+                          <a class="text-primary" style="cursor: pointer" onclick="reply(this)" th:attr="data-commentid=${reply.id},data-commentusername=${reply.username}">reply</a>
+                          &ensp;
+                          <span th:text="${#dates.format(reply.createTime,'yyyy-MM-dd HH:mm')}"></span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <form  class="form-inline">
+            <input type="hidden" name="commentParentId" value="-1">
+            <input type="hidden" th:value="${blog.id}" name="blogId">
+            <input type="hidden" th:value="${session.user} != null ?'1':'0'" name="blogUser">
+            <input type="hidden" th:value="${session.user.username}" th:if="${session.user}" name="commentUsername">
+            <p class="text-muted">Comment</p>
+            &ensp;&ensp;
+            <div class="control-group">
+              <div class="form-group floating-label-form-group controls">
+                <input type="text" class="form-control" placeholder="    Your comment" name= "content" required data-validation-required-message="Please enter your comment.">
+              </div>
+            </div>
+            <div class="form-group">
+              <button class="btn btn-primary">CLEAR</button>
+              &ensp;
+              <button class="btn btn-primary" id="commentpost-btn"  type="button">SEND</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </article>
+
+
+
+  <!-- Footer -->
+  <footer th:replace="_fragments :: footer">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+          <ul class="list-inline text-center">
+            <li class="list-inline-item">
+              <a href="#">
+                <span class="fa-stack fa-lg">
+                  <i class="fas fa-circle fa-stack-2x"></i>
+                  <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
+                </span>
+              </a>
+            </li>
+            <li class="list-inline-item">
+              <a href="#">
+                <span class="fa-stack fa-lg">
+                  <i class="fas fa-circle fa-stack-2x"></i>
+                  <i class="fab fa-facebook-f fa-stack-1x fa-inverse"></i>
+                </span>
+              </a>
+            </li>
+            <li class="list-inline-item">
+              <a href="#">
+                <span class="fa-stack fa-lg">
+                  <i class="fas fa-circle fa-stack-2x"></i>
+                  <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                </span>
+              </a>
+            </li>
+          </ul>
+          <p class="copyright text-muted">Copyright &copy; Your Website 2019</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Bootstrap core JavaScript -->
+  <!--/*/<th:block th:replace="_fragments :: script">/*/-->
+  <script src="theme/vendor/jquery/jquery.min.js"></script>
+  <script src="theme/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Custom scripts for this template -->
+  <script src="theme/js/clean-blog.min.js"></script>
+  <!--/*/</th:block>/*/-->
+  <script>
+    $('#commentpost-btn').on('click', function () {
+      if($("[name='content']").val() != "") {
+        if ($("[name='blogUser']").val()!= '1') {
+          var answer = confirm("Log yet, go to login? ") //把確認框賦值給answer
+          if(answer) //判斷是否點選確定
+            $(location).attr('href',"/admin");
+        }
+        else {
+          postData();
+        }
+      }
+    });
+
+    $(function () {
+      var id = $("[name='blogId']").val();
+      $("#comment-container").load("/comments/"+id);
+    });
+
+    function postData() {
+      $("#comment-container").load("/comments",{
+        "parentComment.id" : $("[name='commentParentId']").val(),
+        "blog.id" : $("[name='blogId']").val(),
+        "username": $("[name='commentUsername']").val(),
+        "content" : $("[name='content']").val()
+      },function (responseTxt, statusTxt, xhr) {
+        clearContent();
+      });
+    }
+
+    function clearContent() {
+      $("[name='content']").val('');
+      $("[name='commentParentId']").val(-1);
+      $("[name='content']").attr("placeholder", "    Your comment");
+    }
+
+    function reply(obj) {
+      var commentParentId = $(obj).data("commentid");
+      var commentParentName = $(obj).data("commentusername");
+      $("[name='content']").attr("placeholder", "@"+commentParentName).focus();
+      $("[name='commentParentId']").val(commentParentId);;
+    }
+
+
+  </script>
+
+</body>
+
+</html>
