@@ -32,7 +32,7 @@
 </nav>
 
 <!-- Page Header -->
-<header class="masthead" style="background-image: url('../../static/theme/img/contact-bg.jpg')" th:url="@{/theme/img/contact-bgjpg}">
+<header class="masthead" style="background-image: url('../../static/theme/img/contact-bg.jpg')" th:url="@{/theme/img/contact-bgjpg}" th:replace="admin/_fragments :: header">
     <div class="overlay"></div>
     <div class="container">
         <div class="row">
@@ -50,11 +50,11 @@
 <!-- Main Content -->
 <div class="container">
     <div class="col-lg-8 col-md-10 mx-auto">
-        <form method="post" th:object="${type}" th:action="*{id}==null ? @{/admin/types} : @{/admin/types/{id}(id=*{id})}" >
+        <form method="post" id="typeFome" th:object="${type}" th:action="*{id}==null ? @{/admin/types} : @{/admin/types/{id}(id=*{id})}" >
                 <div class="control-group">
                     <div class="form-group floating-label-form-group controls">
                         <label>type name</label>
-                        <input type="text" class="form-control" placeholder="Type Name" name="name" required data-validation-required-message="Please enter type's name." th:value="*{name}">
+                        <input type="text" class="form-control" placeholder="Type Name" name="name" th:value="*{name}">
                         <p class="help-block text-danger"></p>
                     </div>
                 </div>
@@ -130,6 +130,27 @@
 <script src="../../static/theme/js/clean-blog.min.js"></script>
 <!--/*/</th:block>/*/-->
 
-</body>
 
+<!--jquery validate-->
+<script th:src="@{/theme/js/jquery.validate.min.js}"></script>
+<script>
+    $(function() {
+        $('#typeForm').validate({
+            rules: {
+                name: {
+                    required: true
+                }
+            },
+            messages: {
+                name: "Please enter type's name.",
+            },
+            debug: false, //这个参数为true，那么表单不会提交，只进行检查
+            errorElement:"em",
+            errorClass:"text-danger"
+        });
+    });
+</script>
+
+</body>
+w
 </html>

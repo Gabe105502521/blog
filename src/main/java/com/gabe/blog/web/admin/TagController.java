@@ -47,16 +47,16 @@ public class TagController {
     public String post(@Valid Tag tag, BindingResult result, RedirectAttributes attributes) {
         Tag t = tagService.getTagByName(tag.getName());
         if (t != null) {
-            result.rejectValue("name", "nameError", "duplicated tags");
+            result.rejectValue("name", "nameError", "Duplicated Tags");
         }
         if (result.hasErrors()) {
             return "/admin/tags-input";
         }
         Tag tag1 = tagService.saveTag(tag);
         if (tag == null) {
-            attributes.addFlashAttribute("message", "Add failure");
+            attributes.addFlashAttribute("message", "Add Failure");
         } else {
-            attributes.addFlashAttribute("message", "Add successfully");
+            attributes.addFlashAttribute("message", "Add Successfully");
 
         }
         return "redirect:/admin/tags";

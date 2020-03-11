@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 
@@ -32,7 +31,7 @@
 </nav>
 
 <!-- Page Header -->
-<header class="masthead" style="background-image: url('../../static/theme/img/contact-bg.jpg')">
+<header class="masthead" style="background-image: url('../../static/theme/img/contact-bg.jpg')" th:replace="admin/_fragments :: header">
     <div class="overlay"></div>
     <div class="container">
         <div class="row">
@@ -53,39 +52,39 @@
             <!-- Contact Form - Enter your email address on line 19 of the mail/contact_me.php file to make this form work. -->
             <!-- WARNING: Some web hosts do not allow emails to be sent through forms to common mail hosts like Gmail or Yahoo. It's recommended that you use a private domain email address! -->
             <!-- To use the contact form, your site must be on a live web host with PHP! The form will not work locally! -->
-            <form name="sentMessage" id="contactForm" method="post" th:action="@{/admin/register}">
+            <form name="sentMessage" id="registerForm" method="post" th:action="@{/admin/register}">
                 <div class="control-group">
                     <div class="form-group floating-label-form-group controls">
                         <label>Username</label>
-                        <input type="text" class="form-control" placeholder="Username" name="username" id="Username" required data-validation-required-message="Please enter your name.">
+                        <input type="text" class="form-control" placeholder="Username" name="username" id="username">
                         <p class="help-block text-danger"></p>
                     </div>
                 </div>
                 <div class="control-group">
                     <div class="form-group floating-label-form-group controls">
                         <label>Password</label>
-                        <input type="password" class="form-control" placeholder="Password" name="password" id="password" required data-validation-required-message="Please enter your password.">
+                        <input type="password" class="form-control" placeholder="Password" name="password" id="password">
                         <p class="help-block text-danger"></p>
                     </div>
                 </div>
                 <div class="control-group">
                     <div class="form-group floating-label-form-group controls">
                         <label>Confirm Password</label>
-                        <input type="password" class="form-control" placeholder="Confirm Password" name="confirmPassword" id="confirmPassword" onkeyup="checkpas()" required data-validation-required-message="Please enter your password.">
+                        <input type="password" class="form-control" placeholder="Confirm Password" name="confirmPassword" id="confirmPassword">
                         <p class="help-block text-danger"></p>
                     </div>
                 </div>
                 <div class="control-group">
                     <div class="form-group floating-label-form-group controls">
                         <label>Email Address</label>
-                        <input type="email" class="form-control" placeholder="Email Address" name="email" id="email"  required data-validation-required-message="Please enter your email address.">
+                        <input type="email" class="form-control" placeholder="Email Address" name="email" id="email">
                         <p class="help-block text-danger"></p>
                     </div>
                 </div>
                 <div class="control-group">
                     <div class="form-group col-xs-12 floating-label-form-group controls">
                         <label>Phone Number</label>
-                        <input type="tel" class="form-control" placeholder="Phone Number" name="cellphone" id="phone" required data-validation-required-message="Please enter your phone number.">
+                        <input type="tel" class="form-control" placeholder="Phone Number" name="cellphone" id="cellphone">
                         <p class="help-block text-danger"></p>
                     </div>
                 </div>
@@ -93,13 +92,13 @@
                 <div id="success"></div>
                 <div class="form-row">
                     <div class="form-group col-md-2">
-                        <button type="submit" class="btn btn-primary" id="sendMessageButton">Send</button>
+                        <button class="btn btn-primary" id="sendMessageButton">Send</button>
                     </div>
                     <div class="form-group col-md-2">
                         <a role="button"  class="btn btn-primary" id="LoginButton" th:href="@{/admin}" >Login</a>
                     </div>
                 </div>
-                <h6 class="warning" style="color: red;">The Confirm Password confirmation does not match.</h6>
+                <!--<h6 class="warning" style="color: red;">The Confirm Password confirmation does not match.</h6>-->
             </form>
         </div>
     </div>
@@ -153,8 +152,13 @@
 <!-- Custom scripts for this template -->
 <script src="../../static/theme/js/clean-blog.min.js"></script>
 <!--/*/</th:block>/*/-->
+
+<!--jquery validate-->
+<script th:src="@{/theme/js/jquery.validate.min.js}"></script>
+
 <!--my own jquery-->
 <script>
+    /*
     $(".warning").hide();
     function checkpas() {
         var pas1 = document.getElementById("password").value;
@@ -166,7 +170,53 @@
             $(".warning").hide();
             $("#sendMessageButton").prop("disabled", false);
         }
-    }
+    } */
+
+    $(function() {
+        $('#registerForm').validate({
+            rules: {
+                username: {
+                    required: true
+                },
+                password: {
+                    required: true,
+                    minlength: 8
+                },
+                confirmPassword: {
+                    equalTo: "#password"
+                },
+                email: {
+                    required: true,
+                    email: true
+                },
+                cellphone : {
+                    required: true,
+                    minlength: 8,
+                    number: true
+                }
+            },
+            messages: {
+                username: {
+                    required: 'Please enter your username.'
+                },
+                password: {
+                    required: 'Please enter your password.'
+                },
+                confirmPassword: " Enter Confirm Password Same as Password",
+                email: "Please enter a valid email address.",
+                cellphone: {
+                    required:'Please enter your phone number.',
+                    minlength:'Please enter at least 8 numbers.',
+                    number:'Please enter at least 8 numbers.'
+                }
+            },
+            debug: false, //这个参数为true，那么表单不会提交，只进行检查
+            errorElement:"em",
+            errorClass:"text-danger"
+        });
+    });
+
+
 </script>
 
 

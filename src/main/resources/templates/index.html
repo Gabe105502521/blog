@@ -33,7 +33,7 @@
 </nav>
 
 <!-- Page Header -->
-<header class="masthead" style="background-image: url('theme/img/home-bg.jpg')" >
+<header class="masthead" style="background-image: url('theme/img/home-bg.jpg')"  th:replace="_fragments :: header">
     <div class="overlay"></div>
     <div class="container">
         <div class="row">
@@ -217,7 +217,17 @@
         }
     });
 
-
+    // 超過100個字以"..."取代
+    $(function(){
+        var len = 50;
+        $(".post-subtitle").each(function(i){
+            if($(this).text().length>len){
+                var text=$(this).text().substring(0,len-1)+"...";
+                $(this).text(text);
+                $(this).width("100%");
+            }
+        });
+    });
 </script>
 
 </body>

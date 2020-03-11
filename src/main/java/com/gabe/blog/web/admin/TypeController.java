@@ -44,16 +44,16 @@ public class TypeController {
     public String post(@Valid Type type, BindingResult result, RedirectAttributes attributes) {
         Type t = typeService.getTypeByName(type.getName());
         if (t != null) {
-            result.rejectValue("name", "nameError", "duplicated types");
+            result.rejectValue("name", "nameError", "Duplicated Types");
         }
         if (result.hasErrors()) {
             return "/admin/types-input";
         }
         Type type1 = typeService.saveType(type);
         if (type == null) {
-            attributes.addFlashAttribute("message", "Add failure");
+            attributes.addFlashAttribute("message", "Add Failure");
         } else {
-            attributes.addFlashAttribute("message", "Add successfully");
+            attributes.addFlashAttribute("message", "Add Successfully");
 
         }
         return "redirect:/admin/types";
@@ -63,16 +63,16 @@ public class TypeController {
     public String editPost(@Valid Type type, BindingResult result, @PathVariable Long id, RedirectAttributes attributes) {
         Type t = typeService.getTypeByName(type.getName());
         if(t != null) {
-            result.rejectValue("name", "nameError", "duplicated types");
+            result.rejectValue("name", "nameError", "Duplicated Types");
         }
         if(result.hasErrors()) {
             return "admin/types-input";
         }
         Type type1 = typeService.updateType(id, type);
         if (type1 == null) {
-            attributes.addFlashAttribute("message", "Update failure");
+            attributes.addFlashAttribute("message", "Update Failure");
         } else {
-            attributes.addFlashAttribute("message", "Update successfully");
+            attributes.addFlashAttribute("message", "Update Successfully");
 
         }
         return "redirect:/admin/types";
@@ -81,7 +81,7 @@ public class TypeController {
     @GetMapping("/types/{id}/delete")
     public String deletePost (@PathVariable Long id, RedirectAttributes attributes){
         typeService.deleteType(id);
-        attributes.addFlashAttribute("message", "Delete successfully");
+        attributes.addFlashAttribute("message", "Delete Successfully");
         return "redirect:/admin/types";
     }
 }

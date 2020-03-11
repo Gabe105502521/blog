@@ -32,7 +32,7 @@
 </nav>
 
 <!-- Page Header -->
-<header class="masthead" style="background-image: url('theme/img/home-bg.jpg')" >
+<header class="masthead" style="background-image: url('theme/img/home-bg.jpg')" th:replace="admin/_fragments :: header">
     <div class="overlay"></div>
     <div class="container">
         <div class="row">
@@ -77,12 +77,12 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr  th:each="blog, iterStat: ${page.content}">
-                    <td><h6 th:text="${iterStat.count}"></h6></td>
-                    <td><h6 th:text="${blog.title}"></h6></td>
-                    <td><h6 th:text="${blog.type.name}"></h6></td>
-                    <td><h6 th:text="${blog.published} ? 'published' : 'unpublished'"></h6></td>
-                    <td><h6 th:text="${blog.updateTime}"></h6></td>
+                <tr th:each="blog, iterStat: ${page.content}" >
+                    <td><span th:text="${iterStat.count}"></span></td>
+                    <td><span  id="title" th:text="${blog.title}"></span></td>
+                    <td><span th:text="${blog.type.name}"></span></td>
+                    <td><span th:text="${blog.published} ? 'published' : 'unpublished'"></span></td>
+                    <td><span id="updateTime" th:text="${#dates.format(blog.updateTime, 'yyyy-MM-dd')}"></span></td>
                     <td>
                         <a class="btn btn-primary" th:href="@{/admin/blogs/{id}/input(id=${blog.id})}">Edit </a>
                         <a class="btn btn-primary" th:href="@{/admin/blogs/{id}/delete(id=${blog.id})}">Delete</a>
@@ -156,6 +156,18 @@
     $(function() {
         $(".selectpicker").selectpicker({
             noneSelectedText: 'Tags' //默认显示内容  
+        });
+
+        var len = 10; // 超過15個字以"..."取代
+        $("#title").each(function(i){
+            if($(this).text().length>len){
+                $(this).attr("title",$(this).text());
+                //本要對齊
+                //var text=$(this).text().substring(0,len-1)+"<br>...";
+                //$(this).html(text);
+                var text=$(this).text().substring(0,len-1)+"...";
+                $(this).text(text);
+            }
         });
     });
 

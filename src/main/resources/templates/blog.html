@@ -53,7 +53,7 @@
   </nav>
 
   <!-- Page Header -->
-  <header class="masthead" style="background-image: url('/theme/img/post-bg.jpg')" >
+  <header class="masthead" style="background-image: url('/theme/img/post-bg.jpg')" th:replace="_fragments :: header">
     <div class="overlay"></div>
     <div class="container">
       <div class="row">
@@ -86,6 +86,9 @@
             Views: <span th:text="${blog.views}"></span>
           </blockquote>
           <hr class="bg-success">
+          <div>
+            <img th:src="@{${blog.firstPicture}}">
+          </div>
           <!--utext會解析html-->
           <div th:utext="${blog.content}" id="content" >
             <!--<blockquote class="blockquote">The dreams of yesterday are the hopes of today and the reality of tomorrow. Science has not yet mastered prophecy. We predict too much for the next year and yet far too little for the next ten.</blockquote>
@@ -138,7 +141,7 @@
               </div>
             </div>
           </div>
-          <form  class="form-inline">
+          <form  id="commentForm" class="form-inline">
             <input type="hidden" name="commentParentId" value="-1">
             <input type="hidden" th:value="${blog.id}" name="blogId">
             <input type="hidden" th:value="${session.user} != null ?'1':'0'" name="blogUser">
@@ -147,13 +150,13 @@
             &ensp;&ensp;
             <div class="control-group">
               <div class="form-group floating-label-form-group controls">
-                <input type="text" class="form-control" placeholder="    Your comment" name= "content" required data-validation-required-message="Please enter your comment.">
+                <input type="text" class="form-control" placeholder="    Your comment" name= "content" >
               </div>
             </div>
             <div class="form-group">
               <button class="btn btn-primary">CLEAR</button>
               &ensp;
-              <button class="btn btn-primary" id="commentpost-btn"  type="button">SEND</button>
+              <button class="btn btn-primary" id="commentpost-btn">SEND</button>
             </div>
           </form>
         </div>
@@ -208,6 +211,10 @@
   <!-- Custom scripts for this template -->
   <script src="theme/js/clean-blog.min.js"></script>
   <!--/*/</th:block>/*/-->
+
+  <!--jquery validate-->
+  <script th:src="@{/theme/js/jquery.validate.min.js}"></script>
+
   <script>
     $('#commentpost-btn').on('click', function () {
       if($("[name='content']").val() != "") {
@@ -225,8 +232,24 @@
     $(function () {
       var id = $("[name='blogId']").val();
       $("#comment-container").load("/comments/"+id);
+
     });
 
+    $(function() {
+      $('#commentForm').validate({
+        rules: {
+          content: {
+            required: true
+          }
+        },
+        messages: {
+          content: "Please enter your comment.",
+        },
+        debug: false, //这个参数为true，那么表单不会提交，只进行检查
+        errorElement:"em",
+        errorClass:"text-danger"
+      });
+    });
     function postData() {
       $("#comment-container").load("/comments",{
         "parentComment.id" : $("[name='commentParentId']").val(),
@@ -259,6 +282,7 @@
       }
     });
   </script>
+
 
 </body>
 

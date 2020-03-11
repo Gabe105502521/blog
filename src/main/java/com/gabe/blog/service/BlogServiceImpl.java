@@ -58,6 +58,7 @@ public class BlogServiceImpl implements BlogService {
 
     @Override
     public Page<Blog> ListBlog(Pageable pageable) {
+
         return blogRepository.findAll(pageable);
     }
 

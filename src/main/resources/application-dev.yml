@@ -11,6 +11,9 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL5Dialect
+  servlet:
+    multipart:
+      location: /static/upload
 logging:
   level:
     root: info

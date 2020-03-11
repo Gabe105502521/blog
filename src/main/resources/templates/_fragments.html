@@ -49,10 +49,20 @@
                     <a class="nav-link" th:href="@{/tags/-1}" href="contact.html" th:classappend="${n==2} ? 'text-dark'">Tags</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/admin}" th:classappend="${n==3} ? 'text-dark'">Login</a>
+                    <a class="nav-link" th:href="@{/admin}" th:classappend="${n==3} ? 'text-dark'" th:if="${session.user==null}"}>Login</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/about}" th:classappend="${n==4} ? 'text-dark'">About</a>
+                <li class="dropdown" th:if="${session.user!=null}">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" style="color: white">
+                        <span>
+                            <img th:src="${session.user.avatar}" alt="" class="mr-2 rounded" width="32" height="32" style="display: inline">
+                            <h6 th:text="${session.user.username}" style="display: inline" class="text-white"></h6>
+                        </span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="nav-link" href="#" >About Me</a></li>
+                        <li class="dropdown-divider"></li>
+                        <li><a class="nav-link" href="#" th:href="@{/admin/logout}">Logout</a></li>
+                    </ul>
                 </li>
             </ul>
         </div>
@@ -61,14 +71,14 @@
 
 
 <!-- Page Header -->
-<header class="masthead" style="background-image: url('theme/img/home-bg.jpg')" >
+<header class="masthead" style="background-image: url('/theme/img/home-bg.jpg')" th:fragment="header" >
     <div class="overlay"></div>
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-md-10 mx-auto">
                 <div class="site-heading">
                     <h1>Clean Blog</h1>
-                    <span class="subheading">A Place You Can Share What You learn</span>
+                    <span class="subheading">A Place You Can Share What You Learn</span>
                 </div>
             </div>
         </div>

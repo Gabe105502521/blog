@@ -32,7 +32,7 @@
 </nav>
 
 <!-- Page Header -->
-<header class="masthead" style="background-image: url('../../static/theme/img/contact-bg.jpg')">
+<header class="masthead" style="background-image: url('../../static/theme/img/contact-bg.jpg')" th:replace="admin/_fragments :: header">
     <div class="overlay"></div>
     <div class="container">
         <div class="row">
@@ -66,8 +66,8 @@
             </thead>
             <tbody>
             <tr th:each="tag,iterStat : ${page.content}">
-                <td><h6 th:text="${iterStat.count}"></h6></td>
-                <td><h6 th:text="${tag.name}"></h6></td>
+                <td><span th:text="${iterStat.count}"></span></td>
+                <td><span th:text="${tag.name}"></span></td>
                 <td>
                     <a class="btn btn-primary"  th:href="@{/admin/tags/{id}/input(id=${tag.id})}">Edit </a>
                     <a class="btn btn-primary" th:href="@{/admin/tags/{id}/delete(id=${tag.id})}">Delete</a>

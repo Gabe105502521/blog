@@ -22,10 +22,6 @@ public class CommentController {
     @Autowired
     private BlogService blogService;
 
-
-    @Value("${comment.avatar}")
-    private String avatar;
-
     /*
     @Value("${comment.avatar}")
     private String avatar;
@@ -50,11 +46,13 @@ public class CommentController {
         } else {
             comment.setAvatar(avatar);
         }*/
+        /* 換在註冊判斷
         if(user.getAvatar()=="" || user.getAvatar() == null){
             comment.setAvatar(avatar);
         } else {
             comment.setAvatar(user.getAvatar());
-        }
+        }*/
+        comment.setAvatar(user.getAvatar());
         commentService.saveComment(comment);
         return "redirect:/comments/" + blogId;
     }

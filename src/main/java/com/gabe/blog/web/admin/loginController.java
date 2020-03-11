@@ -5,6 +5,7 @@ import com.gabe.blog.po.User;
 import com.gabe.blog.service.UserService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,9 +23,14 @@ public class loginController {
     @Autowired
     private UserService userService;
 
+    @Value("${comment.avatar}")
+    private String avatar;
 
     @GetMapping //默認訪問這邊
-    public String loginPage () {
+    public String loginPage (HttpSession session) {
+        if (session.getAttribute("user") != null) {
+            return "redirect:/admin/blogs";
+        }
         return "/admin/login";
     }
 
@@ -40,7 +46,7 @@ public class loginController {
             return "redirect:/admin/blogs";
         } else {
             //用戶名不對需要給前端提示，redirect返回的需用這個，用model的方式會拿不到，入們那有提到
-            attributes.addFlashAttribute("message", "email or password is invalid");
+            attributes.addFlashAttribute("message", "Email or password is invalid");
             return "redirect:/admin";
         }
     }
@@ -61,6 +67,8 @@ public class loginController {
         BeanUtils.copyProperties(userForm, user);
         user.setCreateTime(new Date());
         user.setUpdateTime(new Date());
+        //一律先預設
+        user.setAvatar(avatar);
         userService.saveUser(user);
         return "redirect:/admin";
     }
