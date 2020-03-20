@@ -10,7 +10,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>首頁</title>
+    <title>Tags</title>
 
     <!-- Bootstrap core CSS -->
     <link href="theme/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -189,8 +189,26 @@
         $('#page-container').load("/tags/"+id+"/search", {
             id : id,
             page : $("[name='page']").val()
+        }, function () {
+            var len = 50;
+            var len2 = 20;
+            $(".post-subtitle").each(function(i){
+                if($(this).text().length>len){
+                    var text=$(this).text().substring(0,len-1)+"...";
+                    $(this).text(text);
+                    $(this).width("100%");
+                }
+            });
+            $(".post-title").each(function(i){
+                if($(this).text().length>len2){
+                    var text=$(this).text().substring(0,len2-1)+"...";
+                    $(this).text(text);
+                    $(this).width("100%");
+                }
+            });
         });
     }
+
     $("[name='tagId']").selectpicker('val',$("[name='tagDefaultId']").val());
 
 </script>

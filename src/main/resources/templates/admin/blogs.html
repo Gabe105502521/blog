@@ -2,14 +2,14 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 
-<head th:replace="admin/_fragments :: head('文章列表')">
+<head th:replace="admin/_fragments :: head('Blogs')">
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>首頁</title>
+    <title>Blogs</title>
 
     <!-- Bootstrap core CSS -->
     <link href="theme/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -52,7 +52,8 @@
         <nav class="navbar navbar-light bg-light">
             <form class="form-inline">
                 <input type="hidden" name="page" >
-                <input class="form-control" name="title" type="search" placeholder="Title">
+                <input type="hidden" name="userId" th:value="${session.user.id}">
+                <input class="form-control" name="key_word" type="search" placeholder="key_word">
                 <select class="selectpicker" title="types" name="typeId">
                     <div th:each="type : ${types}">
                         <option th:text = ${type.name}  th:value="${type.id}" value="1" >Java</option>
@@ -65,6 +66,12 @@
             </form>
         </nav>
         <div th:fragment="blogList" id="page-container">
+            <!--thymeleaf解析时会移除掉此标签对，但不会移除其中的内容。-->
+            <!--/*/
+           <div class="alert alert-success " th:unless="${#strings.isEmpty(message)}">
+             <h6 th:text="${message}"></g6>
+           </div>
+             /*/-->
             <table  class="table text-nowrap" >
                 <thead class="thead-light  " >
                 <tr>
@@ -79,7 +86,8 @@
                 <tbody>
                 <tr th:each="blog, iterStat: ${page.content}" >
                     <td><span th:text="${iterStat.count}"></span></td>
-                    <td><span  id="title" th:text="${blog.title}"></span></td>
+<!--                    <input type="hidden" th:value="${blog.title}" name="forCut">-->
+                    <td><span name="title" th:text="${blog.title}"></span></td>
                     <td><span th:text="${blog.type.name}"></span></td>
                     <td><span th:text="${blog.published} ? 'published' : 'unpublished'"></span></td>
                     <td><span id="updateTime" th:text="${#dates.format(blog.updateTime, 'yyyy-MM-dd')}"></span></td>
@@ -153,15 +161,12 @@
 <!--my own js-->
 <script>
 
-    $(function() {
-        $(".selectpicker").selectpicker({
-            noneSelectedText: 'Tags' //默认显示内容  
-        });
 
-        var len = 10; // 超過15個字以"..."取代
-        $("#title").each(function(i){
+    function cutRedundant() {
+        var len = 10; // 超過10個字以"..."取代
+        $("[name='title']").each(function(i){
             if($(this).text().length>len){
-                $(this).attr("title",$(this).text());
+                //$(this).attr("title",$(this).text());
                 //本要對齊
                 //var text=$(this).text().substring(0,len-1)+"<br>...";
                 //$(this).html(text);
@@ -169,8 +174,7 @@
                 $(this).text(text);
             }
         });
-    });
-
+    }
     function page(obj) {
         $("[name='page']").val($(obj).data("page"));
         loadData();
@@ -178,7 +182,7 @@
     $('#clear-btn')
         .on('click', function() {
             $("[name='typeId']").selectpicker('val',['noneSelectedText']);
-            $("[name='title']").val("");
+            $("[name='key_word']").val("");
         })
     ;
     $('#search-btn')
@@ -188,11 +192,21 @@
     });
     function loadData() {
         $('#page-container').load("/admin/blogs/search", {
-            title : $("[name='title']").val(),
+            key_word : $("[name='key_word']").val(),
             typeId : $("[name='typeId']").selectpicker('val'),
+            userId : $("[name='userId']").val(),
             page : $("[name='page']").val()
-        });
+        }, function () {
+            cutRedundant();
+        })
     }
+
+    $(function() {
+        $(".selectpicker").selectpicker({
+            noneSelectedText: 'Tags' //默认显示内容  
+        });
+        cutRedundant();
+    });
 </script>
 </body>
 

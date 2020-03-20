@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 
-<head th:replace="_fragments :: head('首頁')">
+<head th:replace="_fragments :: head('Index')">
 
     <meta charset="utf-8">
 
@@ -10,7 +10,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>首頁</title>
+    <title>Index</title>
 
     <!-- Bootstrap core CSS -->
     <link href="theme/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -198,6 +198,23 @@
             key_word : $("[name='key_word']").val(),
             typeId : $("[name='typeId']").selectpicker('val'),
             page : $("[name='page']").val()
+        }, function () {
+            var len = 50;
+            var len2 = 20;
+            $(".post-subtitle").each(function(i){
+                if($(this).text().length>len){
+                    var text=$(this).text().substring(0,len-1)+"...";
+                    $(this).text(text);
+                    $(this).width("100%");
+                }
+            });
+            $(".post-title").each(function(i){
+                if($(this).text().length>len2){
+                    var text=$(this).text().substring(0,len2-1)+"...";
+                    $(this).text(text);
+                    $(this).width("100%");
+                }
+            });
         });
     }
 
@@ -220,9 +237,17 @@
     // 超過100個字以"..."取代
     $(function(){
         var len = 50;
+        var len2 = 20;
         $(".post-subtitle").each(function(i){
             if($(this).text().length>len){
                 var text=$(this).text().substring(0,len-1)+"...";
+                $(this).text(text);
+                $(this).width("100%");
+            }
+        });
+        $(".post-title").each(function(i){
+            if($(this).text().length>len2){
+                var text=$(this).text().substring(0,len2-1)+"...";
                 $(this).text(text);
                 $(this).width("100%");
             }

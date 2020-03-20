@@ -7,7 +7,6 @@ import com.gabe.blog.service.BlogService;
 import com.gabe.blog.service.TagService;
 import com.gabe.blog.service.TypeService;
 import com.gabe.blog.vo.BlogQuery;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -37,19 +36,29 @@ public class BlogController {
     @Autowired
     private TagService tagService;
 
+    /*
+    //不分登入是哪個user的
     @GetMapping("/blogs")
     public String List(@PageableDefault(size = 5, sort = {"updateTime"}, direction = Sort.Direction.DESC) Pageable pageable,
-                        BlogQuery blog,Model model) {
+                        BlogQuery blog, Model model) {
         model.addAttribute("types", typeService.ListType());
         model.addAttribute("page", blogService.ListBlog(pageable, blog));
         return "/admin/blogs";
-    }
+    }*/
 
+    //分登入是哪個user的
+    @GetMapping("/blogs")
+    public String ListByUser(@PageableDefault(size = 5, sort = {"updateTime"}, direction = Sort.Direction.DESC) Pageable pageable,
+                             BlogQuery blog, HttpSession session, Model model) {
+        model.addAttribute("types", typeService.ListType());
+        model.addAttribute("page", blogService.ListBlogByUser(pageable, blog, (User) session.getAttribute("user")));
+        return "/admin/blogs";
+    }
 
     @PostMapping("/blogs/search")
     public String search(@PageableDefault(size = 5, sort = {"updateTime"}, direction = Sort.Direction.DESC) Pageable pageable,
-                         BlogQuery blog, Model model) {
-        model.addAttribute("page", blogService.ListBlog(pageable, blog));
+                         BlogQuery blog, HttpSession session, Model model) {
+        model.addAttribute("page", blogService.ListBlogByUser(pageable, blog, (User) session.getAttribute("user")));
         return "/admin/blogs :: blogList";
     }
 

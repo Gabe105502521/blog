@@ -6,15 +6,15 @@ import com.gabe.blog.po.Blog;
 import java.util.List;
 
 import com.gabe.blog.po.Type;
+import com.gabe.blog.po.User;
 import com.gabe.blog.util.MarkdownUtils;
 import com.gabe.blog.util.MyBeanUtils;
+
 import com.gabe.blog.vo.BlogQuery;
-import com.gabe.blog.vo.BlogQuery2;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.web.PageableDefault;
@@ -63,8 +63,9 @@ public class BlogServiceImpl implements BlogService {
     }
 
 
-    @Override
-    public Page<Blog> ListBlog(Pageable pageable, BlogQuery blog) {
+
+    //分登入是哪個user的
+    public Page<Blog> ListBlogByUser(Pageable pageable, BlogQuery blog, User user) {
         return blogRepository.findAll(new Specification<Blog>() {
             //root表你要查詢的對象，將之映射成Root，從這個可獲成表的一些字段、屬性值
             //CriteriaQuery 是可以放查詢條件的容器
@@ -73,24 +74,26 @@ public class BlogServiceImpl implements BlogService {
             public Predicate toPredicate(Root<Blog> root, CriteriaQuery<?> cq, CriteriaBuilder cb) {
                 //組合條件放此list
                 List<Predicate> predicates = new ArrayList<>();
-                if (!"".equals(blog.getTitle()) && blog.getTitle() != null) {
-                    predicates.add(cb.like(root.<String>get("title"), "%" + blog.getTitle() + "%"));
+                if (!"".equals(blog.getKey_word()) && blog.getKey_word() != null) {
+                    predicates.add(cb.or(cb.like(root.<String>get("title"), "%" + blog.getKey_word() + "%"), cb.like(root.<String>get("content"), "%" + blog.getKey_word() + "%")));
                 }
                 // id不會有""
                 if (blog.getTypeId() != null) {
                     predicates.add(cb.equal(root.<Type>get("type").get("id"), blog.getTypeId()));
                 }
+                predicates.add(cb.equal(root.<User>get("user").get("id"), user.getId()));
+
                 //傳的參數是條件的數組
                 //他會根據我們給的條件完成自動拼接查詢的sql語句
                 cq.where(predicates.toArray(new Predicate[predicates.size()]));
                 return null;
             }
         }, pageable);
-    }
 
+    }
     //可查關鍵字的
     @Override
-    public Page<Blog> ListBlog(Pageable pageable, BlogQuery2 blog) {
+    public Page<Blog> ListBlog(Pageable pageable, BlogQuery blog) {
         return blogRepository.findAll(new Specification<Blog>() {
             //root表你要查詢的對象，將之映射成Root，從這個可獲成表的一些字段、屬性值
             //CriteriaQuery 是可以放查詢條件的容器

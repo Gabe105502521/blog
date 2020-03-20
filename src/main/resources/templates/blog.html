@@ -79,7 +79,7 @@
           <!--用模板預設的class-->
           <blockquote class="blockquote">
             <img th:src="${blog.user.avatar}" alt="" class="mr-2 rounded" width="32" height="32">
-            Author：<a href="#" ><span th:text="${blog.user.username}" style="font-style: italic; color: #868e96;">Hook</span></a>
+            Author：<span th:text="${blog.user.username}" style="font-style: italic; color: #868e96;">Hook</span>
             &ensp;
             Update Time: <span class="post-preview" th:text="${#dates.format(blog.updateTime,'yyyy-MM-dd HH:mm')}">2020-03-06 19:30</span>
             &ensp;
@@ -154,9 +154,9 @@
               </div>
             </div>
             <div class="form-group">
-              <button class="btn btn-primary">CLEAR</button>
+              <button type="button" class="btn btn-primary" onclick="clearContent()">CLEAR</button>
               &ensp;
-              <button class="btn btn-primary" id="commentpost-btn">SEND</button>
+              <button type="button" class="btn btn-primary" id="commentpost-btn">SEND</button>
             </div>
           </form>
         </div>

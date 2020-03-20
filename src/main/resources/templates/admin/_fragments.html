@@ -54,8 +54,7 @@
                     <a class="nav-link" th:href="@{/admin/tags}" th:classappend="${n==3} ? 'text-dark'">Tags</a>
                 </li>
                 <li class="nav-item">
-
-                    <a class="nav-link" href="about.html" th:classappend="${n==4} ? 'text-dark'" th:if="${session.user==null}"}}>Login</a>
+                    <a class="nav-link" href="setting.html" th:href="@{/admin/setting}" th:classappend="${n==4} ? 'text-dark'">Setting</a>
                 </li>
                 <li class="dropdown" th:if="${session.user!=null}">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" style="color: white">
@@ -65,7 +64,7 @@
                         </span>
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a class="nav-link" href="#" >About Me</a></li>
+                        <li><a class="nav-link" href="#" th:href="@{/admin/blogs}">About Me</a></li>
                         <li class="dropdown-divider"></li>
                         <li><a class="nav-link" href="#" th:href="@{/admin/logout}">Logout</a></li>
                     </ul>

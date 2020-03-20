@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 
-<head th:replace="admin/_fragments :: head('Register')">
+<head th:replace="admin/_fragments :: head('About')">
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Register</title>
+    <title>About</title>
 
     <!-- Bootstrap core CSS -->
     <link href="../../static/theme/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -26,7 +26,7 @@
 <body>
 
 <!-- Navigation -->
-<nav th:replace="admin/_fragments :: nav(3)">
+<nav th:replace="admin/_fragments :: nav(4)">
 
 </nav>
 
@@ -52,18 +52,46 @@
             <!-- Contact Form - Enter your email address on line 19 of the mail/contact_me.php file to make this form work. -->
             <!-- WARNING: Some web hosts do not allow emails to be sent through forms to common mail hosts like Gmail or Yahoo. It's recommended that you use a private domain email address! -->
             <!-- To use the contact form, your site must be on a live web host with PHP! The form will not work locally! -->
-            <form name="sentMessage" id="registerForm" method="post" th:action="@{/admin/register}">
+            <form  id="imgForm" method="post" enctype="multipart/form-data">
+                <img id="preview_progressbarTW_img" th:src="${session.user.avatar}" src="#" class="mr-2 rounded" width="64" height="64">
+                <a onclick="javascript:$('#preview_img').click();" class="btn btn-info text-white" >
+                    <i class="fa fa-photo"></i> Your Avatar
+                </a>
+                <input id="preview_img" style="display:none;" type="file" name="avatar" accept="image/*">
+                <button type="submit" class="btn btn-primary" id="btnSubmit">Upload</button>
+                <div id="imgDiv">
+                    <h6 id="imgMessage"></h6>
+                </div>
+            </form>
+            <form name="sentMessage" id="settingForm" method="post" th:action="@{/admin/setting}">
+                <div class="control-group">
+                    <!--<div class="form-group floating-label-form-group controls">
+                        <img id="preview_progressbarTW_img" th:src="${session.user.avatar}" src="#" class="mr-2 rounded" width="64" height="64">
+                        <a onclick="javascript:$('#upload_img').click();" class="btn btn-info text-white" >
+                            <i class="fa fa-photo"></i> Your Avatar
+                        </a>
+                        <input id="upload_img" style="display:none;" type="file" name="avatar">
+                    </div>-->
+                </div>
                 <div class="control-group">
                     <div class="form-group floating-label-form-group controls">
                         <label>Username</label>
-                        <input type="text" class="form-control" placeholder="Username" name="username" id="username">
+                        <input type="text" class="form-control" placeholder="Username" name="username" id="username" th:value="${user.username}">
                         <p class="help-block text-danger"></p>
                     </div>
                 </div>
                 <div class="control-group">
                     <div class="form-group floating-label-form-group controls">
-                        <label>Password</label>
-                        <input type="password" class="form-control" placeholder="Password" name="password" id="password">
+                        <label>Old Password</label>
+                        <input type="password" class="form-control" placeholder="Old Password" name="oldPassword" id="oldPassword" >
+                        <em class="text-danger" th:if="${wrongPasswordMessage}" th:text="${wrongPasswordMessage}"></em>
+                        <p class="help-block text-danger"></p>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <div class="form-group floating-label-form-group controls">
+                        <label>New Password</label>
+                        <input type="password" class="form-control" placeholder="New Password" name="password" id="password">
                         <p class="help-block text-danger"></p>
                     </div>
                 </div>
@@ -77,14 +105,14 @@
                 <div class="control-group">
                     <div class="form-group floating-label-form-group controls">
                         <label>Email Address</label>
-                        <input type="email" class="form-control" placeholder="Email Address" name="email" id="email">
+                        <input type="email" class="form-control" placeholder="Email Address" name="email" id="email" th:value="${user.email}">
                         <p class="help-block text-danger"></p>
                     </div>
                 </div>
                 <div class="control-group">
                     <div class="form-group col-xs-12 floating-label-form-group controls">
                         <label>Phone Number</label>
-                        <input type="tel" class="form-control" placeholder="Phone Number" name="cellphone" id="cellphone">
+                        <input type="tel" class="form-control" placeholder="Phone Number" name="cellphone" id="cellphone" th:value="${user.cellphone}">
                         <p class="help-block text-danger"></p>
                     </div>
                 </div>
@@ -92,11 +120,17 @@
                 <div id="success"></div>
                 <div class="form-row">
                     <div class="form-group col-md-2">
-                        <button class="btn btn-primary" id="sendMessageButton">Send</button>
+                        <button class="btn btn-primary">Send</button>
                     </div>
                     <div class="form-group col-md-2">
-                        <a role="button"  class="btn btn-primary" id="LoginButton" th:href="@{/admin}" >Login</a>
+                        <a role="button"  class="btn btn-primary text-white"  id="BackButton" onclick="window.history.go(-1)">Back</a>
                     </div>
+                    <!--thymeleaf解析时会移除掉此标签对，但不会移除其中的内容。-->
+                    <!--/*/
+                   <div class="alert alert-success " th:unless="${#strings.isEmpty(message)}">
+                     <h6 th:text="${message}"></g6>
+                   </div>
+                     /*/-->
                 </div>
                 <!--<h6 class="warning" style="color: red;">The Confirm Password confirmation does not match.</h6>-->
             </form>
@@ -144,6 +178,7 @@
     </div>
 </footer>
 
+
 <!-- Bootstrap core JavaScript -->
 <!--/*/<th:block th:replace="admin/_fragments :: script">/*/-->
 <script src="../../static/theme/vendor/jquery/jquery.min.js"></script>
@@ -173,10 +208,17 @@
     } */
 
     $(function() {
-        $('#registerForm').validate({
+
+
+        //驗證
+        $('#settingForm').validate({
             rules: {
                 username: {
                     required: true
+                },
+                oldPassword: {
+                    required: true,
+                    minlength: 8
                 },
                 password: {
                     required: true,
@@ -199,6 +241,9 @@
                 username: {
                     required: 'Please enter your username.'
                 },
+                oldPassword: {
+                    required: 'Please enter your password.'
+                },
                 password: {
                     required: 'Please enter your password.'
                 },
@@ -215,6 +260,65 @@
             errorClass:"text-danger"
         });
     });
+
+    $("#preview_img").change(function(){
+        readURL(this);
+    });
+
+    function readURL(input){
+        //裡面的input 就是我們丟進去的this，也就是<input type="file">，當<input type="file">被DOM變成Object的時候，如果他有選擇到檔案，
+        //會被放在input.files裡面，而且是一個Array(因為input如果寫成 <input type="file" multiple> 的時候是可以複選的)
+        //change這個event有只代表改變，並不代表有檔案。所以我們必須先看有沒有檔案，而且因為單選的關係，所以有檔案一定是在第0個。
+        //另外要提的是這邊得到的並不是完整的檔案，而是檔案的路徑。
+        //HTML必須要在<form> submit以後才會讀取檔案。因此我們這邊必須要用JavaScript來讀取檔案
+
+        if(input.files && input.files[0]){
+
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $("#preview_progressbarTW_img").attr('src', e.target.result);
+            }
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+    //用ajax傳照片
+    $("#btnSubmit").click(function (event) {
+
+        //ajax提交的話她會一直重新run程式直到回傳,你可以將此行註解使用開發者工具看一下console就知道了
+        event.preventDefault();
+        uploadFile();
+
+    });
+    function uploadFile() {
+        // 取得form
+        var form = $("#imgForm")[0];
+        var data = new FormData(form); //將form內的所有訊息打包成FormData object
+        $("#btnSubmit").prop("disabled", true);
+        $.ajax({
+            type: "POST",               //使用POST傳輸,檔案上傳只能用POST
+            enctype: 'multipart/form-data', //將資料加密傳輸 檔案上傳一定要有的屬性
+            url: "/admin/setting/avatar", //要傳輸對應的接口
+            data: data,         //要傳輸的資料,我們將form 內upload打包成data
+            processData: false, //防止jquery將data變成query String
+            contentType: false,
+            cache: false,  //不做快取
+            async : false, //設為同步
+            timeout: 1000000, //設定傳輸的timeout,時間內沒完成則中斷
+            success: function (data) {
+                //console.log("SUCCESS : "+ data);
+                $("#btnSubmit").prop("disabled", false);
+                history.go(0);
+                alert("Update Successfully");
+            },
+            error: function (e) {
+                //console.log("ERROR : ", e);
+                $("#btnSubmit").prop("disabled", false);
+                alert("Update Failure");
+            }
+        })
+    }
 
 
 </script>

@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 
-<head th:replace="admin/_fragments :: head('登入')">
+<head th:replace="admin/_fragments :: head('Login')">
 
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>登入</title>
+  <title>Login</title>
 
   <!-- Bootstrap core CSS -->
   <link href="../../static/theme/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -53,6 +53,13 @@
        <!-- Contact Form - Enter your email address on line 19 of the mail/contact_me.php file to make this form work. -->
       <!-- WARNING: Some web hosts do not allow emails to be sent through forms to common mail hosts like Gmail or Yahoo. It's recommended that you use a private domain email address! -->
       <!-- To use the contact form, your site must be on a live web host with PHP! The form will not work locally! -->
+      <!--thymeleaf解析时会移除掉此标签对，但不会移除其中的内容。-->
+      <!--/*/
+     <div class="alert alert-success " th:unless="${#strings.isEmpty(Regmessage)}">
+       <h6 th:text="${Regmessage}"></g6>
+     </div>
+       /*/-->
+
       <form id="loginForm"  method="post" th:action=@{/admin/login}>
         <div class="control-group">
           <div class="form-group floating-label-form-group controls">

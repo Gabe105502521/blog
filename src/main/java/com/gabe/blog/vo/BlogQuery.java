@@ -1,18 +1,18 @@
 package com.gabe.blog.vo;
 
 public class BlogQuery {
-    private String title;
+    private String key_word;
     private Long TypeId;
 
     public BlogQuery() {
     }
 
-    public String getTitle() {
-        return title;
+    public String getKey_word() {
+        return key_word;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setKey_word(String key_word) {
+        this.key_word = key_word;
     }
 
     public Long getTypeId() {

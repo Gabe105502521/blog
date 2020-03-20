@@ -2,7 +2,7 @@ package com.gabe.blog.web;
 
 import com.gabe.blog.service.BlogService;
 import com.gabe.blog.service.TypeService;
-import com.gabe.blog.vo.BlogQuery2;
+import com.gabe.blog.vo.BlogQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -32,7 +32,7 @@ public class IndexController {
 
     @PostMapping("/index/search")
     public String search(@PageableDefault(size = 5, sort = {"updateTime"}, direction = Sort.Direction.DESC) Pageable pageable,
-                         BlogQuery2 blog, Model model) {
+                         BlogQuery blog, Model model) {
         model.addAttribute("page", blogService.ListBlog(pageable, blog));
         return "/index :: blogList";
     }

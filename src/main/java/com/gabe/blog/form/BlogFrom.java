@@ -3,6 +3,7 @@ package com.gabe.blog.form;
 import com.gabe.blog.po.Tag;
 import com.gabe.blog.po.Type;
 
+import javax.validation.constraints.NotBlank;
 import java.util.ArrayList;
 import java.util.List;
 
